@@ -479,6 +479,149 @@ async def websocket_endpoint(ws: WebSocket) -> None:
         logger.info("Session cleaned up — %s", "mobile disconnected" if is_mobile else "browser closed")
 
 
+@app.websocket("/ws/mobile")
+async def mobile_websocket_endpoint(ws: WebSocket) -> None:
+    """Dedicated WebSocket endpoint for iOS/mobile clients — uses MobileAgent directly."""
+    await ws.accept()
+    logger.info("Mobile client connected")
+
+    remote_page = RemotePage(ws)
+    agent = MobileAgent(remote_page)
+    agent_task: asyncio.Task | None = None
+    stream_task: asyncio.Task | None = None
+
+    session_id = uuid.uuid4().hex[:8]
+    session = SessionState(
+        session_id=session_id, owner_ws=ws, agent=agent,
+        is_mobile=True, remote_page=remote_page,
+    )
+    sessions[session_id] = session
+    _register_phone_call_tool(agent, session)
+
+    try:
+        await ws.send_json({"type": "session_id", "session_id": session_id})
+        await ws.send_json({"type": "hello_ack", "status": "ok"})
+
+        while True:
+            raw = await ws.receive_text()
+            msg = json.loads(raw)
+
+            # Forward browser results to RemotePage
+            if msg.get("type") == "browser_result":
+                remote_page.handle_browser_result(msg)
+                continue
+
+            if msg.get("type") == "message":
+                user_text = msg["content"]
+                logger.info(f"[mobile] User: {user_text}")
+
+                if session.active_call:
+                    await session.active_call.receive_user_response(user_text)
+                    continue
+
+                if stream_task and not stream_task.done():
+                    stream_task.cancel()
+                if agent.is_running:
+                    await agent.stop_task()
+                    if agent_task and not agent_task.done():
+                        agent_task.cancel()
+
+                await ws.send_json({"type": "status", "status": "thinking"})
+
+                agent_task = asyncio.create_task(agent.run_task(user_text))
+                stream_task = asyncio.create_task(
+                    _stream_updates(ws, agent, agent_task)
+                )
+
+            elif msg.get("type") == "stop":
+                if stream_task and not stream_task.done():
+                    stream_task.cancel()
+                if agent.is_running:
+                    await agent.stop_task()
+                    if agent_task and not agent_task.done():
+                        agent_task.cancel()
+                await ws.send_json({"type": "status", "status": "idle"})
+
+            elif msg.get("type") == "auth":
+                token = msg.get("token", "")
+                uid = verify_firebase_token(token)
+                if uid:
+                    session.uid = uid
+                    await ws.send_json({"type": "auth_ok", "uid": uid})
+                else:
+                    await ws.send_json({"type": "auth_error", "content": "Invalid token"})
+
+            elif msg.get("type") == "settings":
+                if "voice_id" in msg:
+                    session.voice_id = msg["voice_id"]
+                if "about_me" in msg:
+                    session.about_me = msg["about_me"]
+                    agent.about_me = msg["about_me"]
+
+            elif msg.get("type") == "start_call":
+                if not session.uid:
+                    await ws.send_json({"type": "call_ended", "content": "Sign in required to make calls."})
+                    continue
+                balance = get_minutes_balance(session.uid)
+                if balance["total"] <= 0:
+                    await ws.send_json({"type": "call_ended", "content": "No call minutes remaining."})
+                    await ws.send_json({"type": "minutes_update", **balance})
+                    continue
+                business = msg.get("business", {})
+                voice_id = msg.get("voice_id") or session.voice_id
+                call_svc = CallService(ws, agent._conversation, business, uid=session.uid, voice_id=voice_id, about_me=session.about_me)
+                session.active_call = call_svc
+                await ws.send_json({"type": "minutes_update", **balance})
+                await call_svc.start_call(business.get("phone", ""))
+
+            elif msg.get("type") == "call_response":
+                if session.active_call:
+                    await session.active_call.receive_user_response(msg.get("content", ""))
+
+            elif msg.get("type") == "end_call":
+                if session.active_call:
+                    await session.active_call.end_call()
+                    try:
+                        _inject_call_transcript(session)
+                    except Exception as e:
+                        logger.warning(f"Failed to inject call transcript: {e}")
+                    session.active_call = None
+
+            elif msg.get("type") == "call_takeover":
+                if session.active_call:
+                    await session.active_call.set_takeover(True)
+
+            elif msg.get("type") == "call_handback":
+                if session.active_call:
+                    await session.active_call.set_takeover(False)
+
+    except WebSocketDisconnect:
+        logger.info("Mobile client disconnected")
+    except Exception as e:
+        logger.error(f"Mobile WebSocket error: {e}", exc_info=True)
+    finally:
+        if session.active_call:
+            try:
+                await session.active_call.end_call()
+            except Exception:
+                pass
+            try:
+                _inject_call_transcript(session)
+            except Exception:
+                pass
+            session.active_call = None
+
+        sessions.pop(session_id, None)
+
+        if stream_task and not stream_task.done():
+            stream_task.cancel()
+        if agent_task and not agent_task.done():
+            agent_task.cancel()
+        remote_page.cancel_all()
+        await agent.shutdown()
+        logger.info("Mobile session cleaned up")
+
+
 async def _poll_screenshots(ws: WebSocket, agent: BrowserAgent) -> None:
     """Poll browser screenshots when agent is idle so the UI stays in sync."""
     try:

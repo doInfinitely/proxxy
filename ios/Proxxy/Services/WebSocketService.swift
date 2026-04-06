@@ -36,12 +36,11 @@ final class WebSocketService: ObservableObject {
     private var pingTimer: Timer?
     private var reconnectAttempts = 0
     private let maxReconnectAttempts = 10
-    private var helloSent = false
 
-    /// Server URL — production Railway deployment.
+    /// Server URL — production Railway deployment (mobile endpoint).
     var serverURL: String = {
         ProcessInfo.processInfo.environment["AGENT_SERVER_URL"]
-            ?? "wss://backend-production-112f.up.railway.app/ws"
+            ?? "wss://backend-production-112f.up.railway.app/ws/mobile"
     }()
 
     deinit {
@@ -63,7 +62,6 @@ final class WebSocketService: ObservableObject {
         webSocketTask = session?.webSocketTask(with: url)
         webSocketTask?.resume()
 
-        // hello is sent after receiving session_id (see handleMessage)
         receiveMessage()
         startPing()
 
@@ -82,7 +80,6 @@ final class WebSocketService: ObservableObject {
         webSocketTask = nil
         session?.invalidateAndCancel()
         session = nil
-        helloSent = false
 
         DispatchQueue.main.async {
             self.isConnected = false
@@ -90,18 +87,6 @@ final class WebSocketService: ObservableObject {
     }
 
     // MARK: - Sending
-
-    /// Send the iOS hello handshake to identify as a mobile client.
-    private func sendHello() {
-        guard !helloSent else { return }
-        helloSent = true
-        let hello: [String: Any] = [
-            "type": "hello",
-            "client": "ios",
-            "version": "1.0",
-        ]
-        sendJSON(hello)
-    }
 
     /// Send a user chat message.
     func sendMessage(_ text: String) {
@@ -234,11 +219,9 @@ final class WebSocketService: ObservableObject {
             case "session_id":
                 self.sessionId = json["session_id"] as? String ?? ""
                 self.onSessionId?(self.sessionId)
-                // Connection is confirmed — send iOS hello handshake now
-                self.sendHello()
 
             case "hello_ack":
-                print("[WS] Server acknowledged iOS client")
+                print("[WS] Server acknowledged mobile client")
 
             case "status":
                 // Two kinds: {"status": "thinking"} or {"content": "Browsing: ..."}
