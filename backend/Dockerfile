@@ -31,7 +31,7 @@ COPY backend/pyproject.toml .
 RUN pip install --no-cache-dir .
 
 # Install Playwright Chromium browser
-RUN playwright install chromium
+RUN python -m playwright install chromium
 
 COPY backend/ .
 
