@@ -36,6 +36,7 @@ final class WebSocketService: ObservableObject {
     private var pingTimer: Timer?
     private var reconnectAttempts = 0
     private let maxReconnectAttempts = 10
+    private var helloSent = false
 
     /// Server URL — production Railway deployment.
     var serverURL: String = {
@@ -62,8 +63,7 @@ final class WebSocketService: ObservableObject {
         webSocketTask = session?.webSocketTask(with: url)
         webSocketTask?.resume()
 
-        // Send iOS hello handshake
-        sendHello()
+        // hello is sent after receiving session_id (see handleMessage)
         receiveMessage()
         startPing()
 
@@ -82,6 +82,7 @@ final class WebSocketService: ObservableObject {
         webSocketTask = nil
         session?.invalidateAndCancel()
         session = nil
+        helloSent = false
 
         DispatchQueue.main.async {
             self.isConnected = false
@@ -92,6 +93,8 @@ final class WebSocketService: ObservableObject {
 
     /// Send the iOS hello handshake to identify as a mobile client.
     private func sendHello() {
+        guard !helloSent else { return }
+        helloSent = true
         let hello: [String: Any] = [
             "type": "hello",
             "client": "ios",
@@ -166,13 +169,7 @@ final class WebSocketService: ObservableObject {
         webSocketTask = session?.webSocketTask(with: url)
         webSocketTask?.resume()
 
-        let hello: [String: Any] = [
-            "type": "hello",
-            "client": "ios",
-            "version": "1.0",
-            "session_id": sessionId,
-        ]
-        sendJSON(hello)
+        // hello is sent after receiving session_id (see handleMessage)
         receiveMessage()
         startPing()
 
@@ -237,6 +234,8 @@ final class WebSocketService: ObservableObject {
             case "session_id":
                 self.sessionId = json["session_id"] as? String ?? ""
                 self.onSessionId?(self.sessionId)
+                // Connection is confirmed — send iOS hello handshake now
+                self.sendHello()
 
             case "hello_ack":
                 print("[WS] Server acknowledged iOS client")
