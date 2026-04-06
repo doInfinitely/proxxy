@@ -1,0 +1,345 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02A9D0CE19115F0F97868F1E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20C9A900F1A5CD4B20D5DF1 /* ContentView.swift */; };
+		19DB63A4C6D058679D8F017F /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCAB1D526A350D7B05B1232 /* ChatView.swift */; };
+		37EFF7D53B465289B7771169 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72AEB60743C5540E964CE385 /* Assets.xcassets */; };
+		3DD207CF0078526EB02E1E78 /* BrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A266670A49985C97877B06EC /* BrowserView.swift */; };
+		4C236CA9EC6559AD88E5C26C /* ProxxyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98BC15317E2594DB2549436 /* ProxxyApp.swift */; };
+		50D54C0776495A02BDBF4BFE /* ChatBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEBA0B0244A852F3898ABB49 /* ChatBubble.swift */; };
+		AA11BB22CC3344DD55667788 /* ThinkingDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB22CC33DD4455EE66778899 /* ThinkingDotsView.swift */; };
+		B443AE849E71533B89542314 /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC3C28C96D751A88B82F0D2 /* WebSocketService.swift */; };
+		DD56B94340735821B6CD54F2 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DA24A0D8FC35DC4A28DAE8F /* Message.swift */; };
+		E11714677686523DB7E001FC /* BrowserBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA99A4AB71E52CFADFA58F1 /* BrowserBridge.swift */; };
+		F310ED60369F5BC7B3F5BAE0 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD759557A05800B99C89C0 /* ToolbarView.swift */; };
+		FD3B7B1F288858BDB019DDE4 /* BrowserCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1710A7A029F65976B2254828 /* BrowserCommand.swift */; };
+		2A3B4C5D6E7F80819A0B1001 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1001 /* Session.swift */; };
+		2A3B4C5D6E7F80819A0B1002 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1002 /* Template.swift */; };
+		2A3B4C5D6E7F80819A0B1003 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1003 /* StorageService.swift */; };
+		2A3B4C5D6E7F80819A0B1004 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1004 /* SessionManager.swift */; };
+		2A3B4C5D6E7F80819A0B1005 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1005 /* SettingsManager.swift */; };
+		2A3B4C5D6E7F80819A0B1006 /* NarrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1006 /* NarrationService.swift */; };
+		2A3B4C5D6E7F80819A0B1007 /* CallService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1007 /* CallService.swift */; };
+		2A3B4C5D6E7F80819A0B1008 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1008 /* HistoryView.swift */; };
+		2A3B4C5D6E7F80819A0B1009 /* TemplateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B1009 /* TemplateListView.swift */; };
+		2A3B4C5D6E7F80819A0B100A /* TemplateEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B100A /* TemplateEditorView.swift */; };
+		2A3B4C5D6E7F80819A0B100B /* TemplateFillView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B100B /* TemplateFillView.swift */; };
+		2A3B4C5D6E7F80819A0B100C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B100C /* SettingsView.swift */; };
+		2A3B4C5D6E7F80819A0B100D /* CallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70819A0B100D /* CallView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1710A7A029F65976B2254828 /* BrowserCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserCommand.swift; sourceTree = "<group>"; };
+		464120BE58E35723ABFE6B9A /* Proxxy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Proxxy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AA99A4AB71E52CFADFA58F1 /* BrowserBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserBridge.swift; sourceTree = "<group>"; };
+		72AEB60743C5540E964CE385 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8DA24A0D8FC35DC4A28DAE8F /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		9BCAB1D526A350D7B05B1232 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		A1AD759557A05800B99C89C0 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
+		A266670A49985C97877B06EC /* BrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserView.swift; sourceTree = "<group>"; };
+		BB22CC33DD4455EE66778899 /* ThinkingDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThinkingDotsView.swift; sourceTree = "<group>"; };
+		C20C9A900F1A5CD4B20D5DF1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DEBA0B0244A852F3898ABB49 /* ChatBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubble.swift; sourceTree = "<group>"; };
+		EDC3C28C96D751A88B82F0D2 /* WebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketService.swift; sourceTree = "<group>"; };
+		F98BC15317E2594DB2549436 /* ProxxyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxxyApp.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1001 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1002 /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1003 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1004 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1005 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1006 /* NarrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NarrationService.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1007 /* CallService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallService.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1008 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B1009 /* TemplateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateListView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B100A /* TemplateEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateEditorView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B100B /* TemplateFillView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateFillView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B100C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70819A0B100D /* CallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E7110709DB0758BE85F9923E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03D3D2BCF27D5CF88F90A370 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9BCAB1D526A350D7B05B1232 /* ChatView.swift */,
+				DEBA0B0244A852F3898ABB49 /* ChatBubble.swift */,
+				A266670A49985C97877B06EC /* BrowserView.swift */,
+				A1AD759557A05800B99C89C0 /* ToolbarView.swift */,
+				BB22CC33DD4455EE66778899 /* ThinkingDotsView.swift */,
+				1A2B3C4D5E6F70819A0B1008 /* HistoryView.swift */,
+				1A2B3C4D5E6F70819A0B1009 /* TemplateListView.swift */,
+				1A2B3C4D5E6F70819A0B100A /* TemplateEditorView.swift */,
+				1A2B3C4D5E6F70819A0B100B /* TemplateFillView.swift */,
+				1A2B3C4D5E6F70819A0B100C /* SettingsView.swift */,
+				1A2B3C4D5E6F70819A0B100D /* CallView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2D2E6A3402C950B78E0D2671 = {
+			isa = PBXGroup;
+			children = (
+				FB1B21E7046D52E5B495CF4A /* Proxxy */,
+				92C43B9FC0E65F6DB2CAB38E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3CDC128FBE8F5660BD3E144F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				72AEB60743C5540E964CE385 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		92C43B9FC0E65F6DB2CAB38E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				464120BE58E35723ABFE6B9A /* Proxxy.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B605DA7B51705E1D8851CD87 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8DA24A0D8FC35DC4A28DAE8F /* Message.swift */,
+				1710A7A029F65976B2254828 /* BrowserCommand.swift */,
+				1A2B3C4D5E6F70819A0B1001 /* Session.swift */,
+				1A2B3C4D5E6F70819A0B1002 /* Template.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F4DBA23A83C15AAE9BC714F4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				EDC3C28C96D751A88B82F0D2 /* WebSocketService.swift */,
+				5AA99A4AB71E52CFADFA58F1 /* BrowserBridge.swift */,
+				1A2B3C4D5E6F70819A0B1003 /* StorageService.swift */,
+				1A2B3C4D5E6F70819A0B1004 /* SessionManager.swift */,
+				1A2B3C4D5E6F70819A0B1005 /* SettingsManager.swift */,
+				1A2B3C4D5E6F70819A0B1006 /* NarrationService.swift */,
+				1A2B3C4D5E6F70819A0B1007 /* CallService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		FB1B21E7046D52E5B495CF4A /* Proxxy */ = {
+			isa = PBXGroup;
+			children = (
+				F98BC15317E2594DB2549436 /* ProxxyApp.swift */,
+				C20C9A900F1A5CD4B20D5DF1 /* ContentView.swift */,
+				03D3D2BCF27D5CF88F90A370 /* Views */,
+				F4DBA23A83C15AAE9BC714F4 /* Services */,
+				B605DA7B51705E1D8851CD87 /* Models */,
+				3CDC128FBE8F5660BD3E144F /* Resources */,
+			);
+			path = Proxxy;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		61CCE653B4C5566480A0A709 /* Proxxy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FD547E843FA65F3696C7DC71 /* Build configuration list for PBXNativeTarget "Proxxy" */;
+			buildPhases = (
+				46875295CB955BE8A98FF953 /* Sources */,
+				E7110709DB0758BE85F9923E /* Frameworks */,
+				9EFB346BABF358748FD463B4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Proxxy;
+			productName = Proxxy;
+			productReference = 464120BE58E35723ABFE6B9A /* Proxxy.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D628296EA6BD57128CD1B32B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = 3812B0D2C3535A3694812C9C /* Build configuration list for PBXProject "Proxxy" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2D2E6A3402C950B78E0D2671;
+			productRefGroup = 92C43B9FC0E65F6DB2CAB38E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				61CCE653B4C5566480A0A709 /* Proxxy */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9EFB346BABF358748FD463B4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37EFF7D53B465289B7771169 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		46875295CB955BE8A98FF953 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C236CA9EC6559AD88E5C26C /* ProxxyApp.swift in Sources */,
+				02A9D0CE19115F0F97868F1E /* ContentView.swift in Sources */,
+				19DB63A4C6D058679D8F017F /* ChatView.swift in Sources */,
+				50D54C0776495A02BDBF4BFE /* ChatBubble.swift in Sources */,
+				3DD207CF0078526EB02E1E78 /* BrowserView.swift in Sources */,
+				F310ED60369F5BC7B3F5BAE0 /* ToolbarView.swift in Sources */,
+				B443AE849E71533B89542314 /* WebSocketService.swift in Sources */,
+				E11714677686523DB7E001FC /* BrowserBridge.swift in Sources */,
+				DD56B94340735821B6CD54F2 /* Message.swift in Sources */,
+				FD3B7B1F288858BDB019DDE4 /* BrowserCommand.swift in Sources */,
+				AA11BB22CC3344DD55667788 /* ThinkingDotsView.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1001 /* Session.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1002 /* Template.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1003 /* StorageService.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1004 /* SessionManager.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1005 /* SettingsManager.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1006 /* NarrationService.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1007 /* CallService.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1008 /* HistoryView.swift in Sources */,
+				2A3B4C5D6E7F80819A0B1009 /* TemplateListView.swift in Sources */,
+				2A3B4C5D6E7F80819A0B100A /* TemplateEditorView.swift in Sources */,
+				2A3B4C5D6E7F80819A0B100B /* TemplateFillView.swift in Sources */,
+				2A3B4C5D6E7F80819A0B100C /* SettingsView.swift in Sources */,
+				2A3B4C5D6E7F80819A0B100D /* CallView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1534C16758525EA9973A04CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KZ6LCPLLGQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.proxxy.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		36E27742F7DF5BAAB8554D4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		61D2602C50675DDF9639FA29 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8757FEF342D551EA93BD992B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KZ6LCPLLGQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.proxxy.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3812B0D2C3535A3694812C9C /* Build configuration list for PBXProject "Proxxy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36E27742F7DF5BAAB8554D4F /* Debug */,
+				61D2602C50675DDF9639FA29 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FD547E843FA65F3696C7DC71 /* Build configuration list for PBXNativeTarget "Proxxy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8757FEF342D551EA93BD992B /* Debug */,
+				1534C16758525EA9973A04CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D628296EA6BD57128CD1B32B /* Project object */;
+}

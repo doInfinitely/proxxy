@@ -7,14 +7,21 @@ import os
 from datetime import datetime, timezone
 from dataclasses import dataclass, field
 
-from browser_use import Agent, Browser
+from browser_use import Agent, Browser, Controller
+from browser_use.browser.profile import ProxySettings
 
 logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """\
-You are a helpful AI assistant that uses the browser to complete tasks for the \
-user. You can search the web, navigate websites, fill out forms, extract \
-information, and perform any browser-based task.
+You are Proxxy, a helpful AI assistant that uses the browser to complete tasks \
+for the user. You can search the web, navigate websites, fill out forms, \
+extract information, and perform any browser-based task.
+
+You can also make phone calls to businesses using the make_phone_call action. \
+When the user asks you to call a business, first find the phone number by \
+browsing the web, then use make_phone_call with the phone number and business \
+name. The call will be handled by an AI voice agent. The call result and \
+transcript will be returned to you when the call ends.
 
 The current date and time is: {current_datetime}
 
@@ -55,6 +62,8 @@ class BrowserAgent:
         self._step_count: int = 0
         self._conversation: list[dict[str, str]] = []  # {role, content}
         self._agent: Agent | None = None
+        self.controller: Controller | None = None  # set externally with custom actions
+        self.about_me: str = ""  # user's about me info
 
     async def _ensure_browser(self) -> Browser:
         """Create browser if not already open.
@@ -85,7 +94,7 @@ class BrowserAgent:
                 )
             else:
                 headless = os.environ.get("HEADLESS", "false").strip().lower() in ("true", "1", "yes")
-                self.browser = Browser(
+                kwargs: dict = dict(
                     headless=headless,
                     keep_alive=True,
                     chromium_sandbox=False,
@@ -96,6 +105,21 @@ class BrowserAgent:
                         "--single-process",
                     ],
                 )
+                # ScraperAPI residential proxy (disable with DISABLE_SCRAPER_PROXY=1)
+                scraper_key = os.environ.get("SCRAPERAPI_KEY")
+                proxy_disabled = os.environ.get("DISABLE_SCRAPER_PROXY", "").strip() in ("1", "true", "yes")
+                if scraper_key and not proxy_disabled:
+                    logger.info("ScraperAPI proxy enabled (key length=%d)", len(scraper_key))
+                    kwargs["proxy"] = ProxySettings(
+                        server="http://proxy-server.scraperapi.com:8001",
+                        username="scraperapi.ultra_premium=true",
+                        password=scraper_key,
+                    )
+                    kwargs["disable_security"] = True  # proxy does SSL interception
+                else:
+                    logger.info("ScraperAPI proxy not active (key=%s, disabled=%s)",
+                                "set" if scraper_key else "missing", proxy_disabled)
+                self.browser = Browser(**kwargs)
         return self.browser
 
     def _build_task_with_context(self, user_message: str) -> str:
@@ -120,7 +144,10 @@ class BrowserAgent:
 
     def _system_prompt(self) -> str:
         now = datetime.now(timezone.utc).strftime("%A, %B %d, %Y at %H:%M UTC")
-        return SYSTEM_PROMPT.format(current_datetime=now)
+        prompt = SYSTEM_PROMPT.format(current_datetime=now)
+        if self.about_me:
+            prompt += f"\n\nAbout the user:\n{self.about_me}"
+        return prompt
 
     async def run_task(self, user_message: str) -> None:
         """Run a task using the persistent browser session, with retry on timeout."""
@@ -134,7 +161,7 @@ class BrowserAgent:
             try:
                 browser = await self._ensure_browser()
 
-                self._agent = Agent(
+                agent_kwargs = dict(
                     task=task,
                     browser=browser,
                     extend_system_message=self._system_prompt(),
@@ -143,6 +170,9 @@ class BrowserAgent:
                     max_actions_per_step=3,
                     use_judge=False,
                 )
+                if self.controller:
+                    agent_kwargs["controller"] = self.controller
+                self._agent = Agent(**agent_kwargs)
 
                 history = await self._agent.run(max_steps=50)
                 final = history.final_result()

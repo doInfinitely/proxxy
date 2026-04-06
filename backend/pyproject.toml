@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "browser-agent"
+name = "proxxy"
 version = "0.1.0"
-description = "General-purpose AI browser agent with live browser view"
+description = "AI assistant that browses and makes calls on your behalf"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115.0",
@@ -13,4 +13,11 @@ dependencies = [
     "websockets>=15.0",
     "browser-use>=0.12.0",
     "python-dotenv>=1.0",
+    "twilio>=9.0",
+    "openai>=1.0",
+    "stripe>=8.0",
+    "numpy>=1.26",
+    "webrtcvad>=2.0.10",
+    "httpx>=0.27",
+    "anthropic>=0.39",
 ]
