@@ -7,7 +7,7 @@ struct CallView: View {
     @EnvironmentObject var settings: SettingsManager
 
     @State private var phoneNumber = ""
-    @State private var businessName = ""
+    @State private var contactName = ""
 
     var body: some View {
         NavigationView {
@@ -35,7 +35,7 @@ struct CallView: View {
                 .font(.system(size: 80))
                 .foregroundColor(.green)
 
-            TextField("Business name (optional)", text: $businessName)
+            TextField("Contact name (optional)", text: $contactName)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal, 40)
 
@@ -46,7 +46,7 @@ struct CallView: View {
 
             Button(action: {
                 callService.voiceId = settings.selectedVoiceId
-                callService.startCall(phone: phoneNumber, businessName: businessName)
+                callService.startCall(phone: phoneNumber, contactName: contactName)
             }) {
                 Label("Call", systemImage: "phone.fill")
                     .font(.headline)
@@ -175,7 +175,7 @@ struct TranscriptBubble: View {
     private var speakerLabel: String {
         switch entry.speaker {
         case "agent": return "AI Agent"
-        case "business": return "Business"
+        case "business": return "Them"
         case "user": return "You"
         case "system": return "System"
         default: return entry.speaker.capitalized

@@ -11,7 +11,7 @@ final class CallService: ObservableObject {
 
     struct TranscriptEntry: Identifiable {
         let id = UUID()
-        let speaker: String  // "agent", "business", "user"
+        let speaker: String  // "agent", "contact", "user"
         let text: String
         let timestamp: Date
     }
@@ -19,13 +19,13 @@ final class CallService: ObservableObject {
     /// Selected ElevenLabs voice ID for calls.
     var voiceId: String = ""
 
-    /// Start a phone call to the given number with business info.
-    func startCall(phone: String, businessName: String = "") {
+    /// Start a phone call to the given number with contact info.
+    func startCall(phone: String, contactName: String = "") {
         var msg: [String: Any] = [
             "type": "start_call",
             "business": [
                 "phone": phone,
-                "name": businessName,
+                "name": contactName,
             ],
         ]
         if !voiceId.isEmpty {
