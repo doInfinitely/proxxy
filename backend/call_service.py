@@ -34,7 +34,7 @@ CALL_COMPLETE_RE = re.compile(r"\[CALL_COMPLETE:\s*(.+?)\]", re.DOTALL)
 PRESS_RE = re.compile(r"\[PRESS:\s*([0-9*#A-Dw]+)\]", re.IGNORECASE)
 
 SYSTEM_PROMPT = """You are Proxxy, an AI assistant on a live phone call. You are NOT a human.
-You are calling {business_name} on behalf of your user.
+You are calling {contact_name} on behalf of your user.
 
 IDENTITY: You are Proxxy, an AI. Do NOT pretend to be the user or use the user's name as
 your own. If asked who you are, say "I'm Proxxy, an AI assistant calling on behalf of
@@ -42,7 +42,7 @@ your own. If asked who you are, say "I'm Proxxy, an AI assistant calling on beha
 
 The user asked you to call because: {user_purpose}
 
-Business you are calling:
+Who you are calling:
 - Name: {name}
 - Address: {address}
 - Phone: {phone}
@@ -185,7 +185,7 @@ class CallService:
 
             await self._send_to_chat({
                 "type": "call_starting",
-                "business_name": self.business.get("name", ""),
+                "contact_name": self.business.get("name", ""),
                 "call_id": self.call_id,
             })
 
@@ -214,7 +214,7 @@ class CallService:
 
         await self._send_to_chat({
             "type": "call_connected",
-            "business_name": self.business.get("name", ""),
+            "contact_name": self.business.get("name", ""),
         })
 
         # STT loop sends transcript bubbles in real-time; respond loop
@@ -413,7 +413,7 @@ class CallService:
     async def _get_gpt_response(self, latest_input: str) -> str:
         """Build GPT messages and get a response."""
         system = SYSTEM_PROMPT.format(
-            business_name=self.business.get("name", "Unknown"),
+            contact_name=self.business.get("name", "Unknown"),
             user_purpose=self.user_purpose,
             name=self.business.get("name", "Unknown"),
             address=self.business.get("address", "N/A"),

@@ -82,9 +82,9 @@ def _create_call_controller(session: SessionState) -> Controller:
 
     class PhoneCallParams(BaseModel):
         phone_number: str
-        business_name: str
+        contact_name: str
 
-    @controller.action("Make a phone call to a business. Use this when the user asks you to call somewhere. First find the phone number by browsing, then call.", param_model=PhoneCallParams)
+    @controller.action("Make a phone call. Use this when the user asks you to call someone — a person or a business. Provide the phone number and name.", param_model=PhoneCallParams)
     async def make_phone_call(params: PhoneCallParams):
         ws = session.owner_ws
 
@@ -100,7 +100,7 @@ def _create_call_controller(session: SessionState) -> Controller:
         # Create call service
         call_svc = CallService(
             ws, session.agent._conversation,
-            {"phone": params.phone_number, "name": params.business_name},
+            {"phone": params.phone_number, "name": params.contact_name},
             uid=session.uid,
             voice_id=session.voice_id,
             about_me=session.about_me,
@@ -111,7 +111,7 @@ def _create_call_controller(session: SessionState) -> Controller:
         await ws.send_json({
             "type": "call_status",
             "status": "ringing",
-            "business": params.business_name,
+            "contact": params.contact_name,
             "phone": params.phone_number,
         })
 
@@ -126,7 +126,7 @@ def _create_call_controller(session: SessionState) -> Controller:
             # Collect transcript
             transcript_lines = []
             for entry in call_svc.phone_transcript:
-                speaker = "Business" if entry["role"] == "business" else "Agent"
+                speaker = "Them" if entry["role"] == "business" else "Agent"
                 transcript_lines.append(f"{speaker}: {entry['content']}")
 
             _inject_call_transcript(session)
@@ -151,7 +151,7 @@ def _register_phone_call_tool(agent: MobileAgent, session: SessionState) -> None
     async def handle_phone_call(params: dict) -> str:
         ws = session.owner_ws
         phone_number = params.get("phone_number", "")
-        business_name = params.get("business_name", "")
+        contact_name = params.get("contact_name", "")
 
         if not session.uid:
             return "Cannot make calls: user is not signed in."
@@ -162,7 +162,7 @@ def _register_phone_call_tool(agent: MobileAgent, session: SessionState) -> None
 
         call_svc = CallService(
             ws, session.agent._conversation,
-            {"phone": phone_number, "name": business_name},
+            {"phone": phone_number, "name": contact_name},
             uid=session.uid,
             voice_id=session.voice_id,
             about_me=session.about_me,
@@ -173,7 +173,7 @@ def _register_phone_call_tool(agent: MobileAgent, session: SessionState) -> None
         await ws.send_json({
             "type": "call_status",
             "status": "ringing",
-            "business": business_name,
+            "contact": contact_name,
             "phone": phone_number,
         })
 
@@ -185,7 +185,7 @@ def _register_phone_call_tool(agent: MobileAgent, session: SessionState) -> None
 
             transcript_lines = []
             for entry in call_svc.phone_transcript:
-                speaker = "Business" if entry["role"] == "business" else "Agent"
+                speaker = "Them" if entry["role"] == "business" else "Agent"
                 transcript_lines.append(f"{speaker}: {entry['content']}")
 
             _inject_call_transcript(session)
@@ -204,16 +204,16 @@ def _register_phone_call_tool(agent: MobileAgent, session: SessionState) -> None
     agent.register_tool(
         name="make_phone_call",
         description=(
-            "Make a phone call to a business. Use this when the user asks you to "
-            "call somewhere. First find the phone number by browsing, then call."
+            "Make a phone call. Use this when the user asks you to call someone — "
+            "a person or a business. Provide the phone number and name."
         ),
         parameters={
             "type": "object",
             "properties": {
                 "phone_number": {"type": "string", "description": "The phone number to call"},
-                "business_name": {"type": "string", "description": "The name of the business"},
+                "contact_name": {"type": "string", "description": "The name of the person or business being called"},
             },
-            "required": ["phone_number", "business_name"],
+            "required": ["phone_number", "contact_name"],
         },
         handler=handle_phone_call,
     )
@@ -228,9 +228,9 @@ def _inject_call_transcript(session: SessionState) -> None:
     for entry in call.phone_transcript:
         speaker = "Business" if entry["role"] == "business" else "Agent (you, on the phone)"
         lines.append(f"{speaker}: {entry['content']}")
-    business_name = call.business.get("name", "the business")
+    contact_name = call.business.get("name", "the contact")
     summary = (
-        f"[Phone call with {business_name} ended. Transcript:]\n"
+        f"[Phone call with {contact_name} ended. Transcript:]\n"
         + "\n".join(lines)
     )
     session.agent._conversation.append({"role": "assistant", "content": summary})
