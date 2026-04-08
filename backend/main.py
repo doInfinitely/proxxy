@@ -153,13 +153,6 @@ def _register_phone_call_tool(agent: MobileAgent, session: SessionState) -> None
         phone_number = params.get("phone_number", "")
         contact_name = params.get("contact_name", "")
 
-        if not session.uid:
-            return "Cannot make calls: user is not signed in."
-
-        balance = get_minutes_balance(session.uid)
-        if balance["total"] <= 0:
-            return "Cannot make calls: no call minutes remaining."
-
         call_svc = CallService(
             ws, session.agent._conversation,
             {"phone": phone_number, "name": contact_name},
@@ -169,7 +162,6 @@ def _register_phone_call_tool(agent: MobileAgent, session: SessionState) -> None
         )
         session.active_call = call_svc
 
-        await ws.send_json({"type": "minutes_update", **balance})
         await ws.send_json({
             "type": "call_status",
             "status": "ringing",
@@ -559,19 +551,10 @@ async def mobile_websocket_endpoint(ws: WebSocket) -> None:
                     agent.about_me = msg["about_me"]
 
             elif msg.get("type") == "start_call":
-                if not session.uid:
-                    await ws.send_json({"type": "call_ended", "content": "Sign in required to make calls."})
-                    continue
-                balance = get_minutes_balance(session.uid)
-                if balance["total"] <= 0:
-                    await ws.send_json({"type": "call_ended", "content": "No call minutes remaining."})
-                    await ws.send_json({"type": "minutes_update", **balance})
-                    continue
                 business = msg.get("business", {})
                 voice_id = msg.get("voice_id") or session.voice_id
                 call_svc = CallService(ws, agent._conversation, business, uid=session.uid, voice_id=voice_id, about_me=session.about_me)
                 session.active_call = call_svc
-                await ws.send_json({"type": "minutes_update", **balance})
                 await call_svc.start_call(business.get("phone", ""))
 
             elif msg.get("type") == "call_response":
